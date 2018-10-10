@@ -1,9 +1,9 @@
 {
   "name": "national-flatpickr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight, powerful javascript datetime picker",
   "scripts": {
-    "build": "run-s build:pre build:build build:post",
+    "build": "run-s build:build build:post",
     "build:pre": "rm -rf dist && mkdir -p dist/themes",
     "build:build": "ts-node --transpileOnly build.ts",
     "build:post": "sh ./emitDeclarations.sh",
