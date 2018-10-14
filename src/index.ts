@@ -38,6 +38,7 @@ import {
   convertToNational,
   getDaysInNationalMonth,
   convertToGregorian,
+  enforceNumericShaping,
 } from "./utils/nationalcalendar";
 
 const DEBOUNCED_CHANGE_MS = 300;
@@ -672,7 +673,12 @@ function FlatpickrInstance(
       dayElement = createElement<DayElement>(
         "span",
         "flatpickr-day " + className,
-        !isNationalCalendar() ? date.getDate().toString() : dayNumber
+        !isNationalCalendar()
+          ? enforceNumericShaping(
+              date.getDate().toString(),
+              self.config.typeNumShaping
+            )
+          : enforceNumericShaping(dayNumber, self.config.typeNumShaping)
       );
 
     dayElement.dateObj = date;
@@ -1428,7 +1434,7 @@ function FlatpickrInstance(
       )
         return;
 
-      const newYearNum = newYear,
+      var newYearNum = newYear,
         isNewYear = self.currentYear !== newYearNum;
 
       self.currentYear = newYearNum || self.currentYear;
@@ -1453,11 +1459,11 @@ function FlatpickrInstance(
     } else {
       const nMinDate = convertToNational(
         self.config.minDate,
-        options.typeCalendar
+        self.config.typeCalendar
       );
       const nMaxDate = convertToNational(
         self.config.maxDate,
-        options.typeCalendar
+        self.config.typeCalendar
       );
       if (
         !newYear ||
@@ -1466,7 +1472,7 @@ function FlatpickrInstance(
       )
         return;
 
-      const newYearNum = newYear,
+      var newYearNum = newYear,
         isNewYear = self.currentYear !== newYearNum;
 
       self.currentYear = newYearNum || self.currentYear;
@@ -1932,6 +1938,7 @@ function FlatpickrInstance(
     self.config.parseDate = userConfig.parseDate;
     self.config.formatDate = userConfig.formatDate;
     self.config.typeCalendar = userConfig.typeCalendar;
+    self.config.typeNumShaping = userConfig.typeNumShaping;
 
     Object.defineProperty(self.config, "enable", {
       get: () => self.config._enable,
@@ -2613,6 +2620,10 @@ function FlatpickrInstance(
       yearElement.value = !isNationalCalendar()
         ? d.getFullYear().toString()
         : year;
+      yearElement.value = enforceNumericShaping(
+        yearElement.value,
+        self.config.typeNumShaping
+      );
       month++;
       if (month > 11) {
         month = 0;

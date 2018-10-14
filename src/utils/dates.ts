@@ -8,6 +8,7 @@ import {
 } from "./formatting";
 import { defaults, ParsedOptions } from "../types/options";
 import { english } from "../l10n/default";
+import { enforceNumericShaping } from "./nationalcalendar";
 
 export interface FormatterArgs {
   config?: ParsedOptions;
@@ -28,17 +29,20 @@ export const createDateFormatter = ({
     return config.formatDate(dateObj, frmt, locale);
   }
 
-  return frmt
-    .split("")
-    .map(
-      (c, i, arr) =>
-        formats[c as token] && arr[i - 1] !== "\\"
-          ? formats[c as token](dateObj, locale, config)
-          : c !== "\\"
-            ? c
-            : ""
-    )
-    .join("");
+  return enforceNumericShaping(
+    frmt
+      .split("")
+      .map(
+        (c, i, arr) =>
+          formats[c as token] && arr[i - 1] !== "\\"
+            ? formats[c as token](dateObj, locale, config)
+            : c !== "\\"
+              ? c
+              : ""
+      )
+      .join(""),
+    config.typeNumShaping
+  );
 };
 
 export const createDateParser = ({ config = defaults, l10n = english }) => (

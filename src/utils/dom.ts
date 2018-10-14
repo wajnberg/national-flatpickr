@@ -51,7 +51,7 @@ export function createNumberInput(
     arrowDown = createElement<HTMLSpanElement>("span", "arrowDown");
 
   numInput.type = "text";
-  numInput.pattern = "\\d*";
+  numInput.pattern = "(([0-9])|([\u0660-\u0669]))*";
 
   if (opts !== undefined)
     for (const key in opts) numInput.setAttribute(key, opts[key]);

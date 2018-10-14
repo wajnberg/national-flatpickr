@@ -241,6 +241,9 @@ Use it along with "enableTime" to create a time picker. */
   /* Type of the calendar. */
   typeCalendar: string;
 
+  /* Numeric shaping type. */
+  typeNumShaping: string;
+
   /* Display week numbers left of the calendar. */
   weekNumbers: boolean;
 
@@ -315,6 +318,7 @@ export interface ParsedOptions {
   static: boolean;
   time_24hr: boolean;
   typeCalendar: string;
+  typeNumShaping: string;
   weekNumbers: boolean;
   wrap: boolean;
 }
@@ -376,7 +380,6 @@ export const defaults: ParsedOptions = {
   showMonths: 1,
   static: false,
   time_24hr: false,
-  typeCalendar: "none",
   weekNumbers: false,
   wrap: false,
 };
