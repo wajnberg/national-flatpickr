@@ -29,19 +29,23 @@ export const createDateFormatter = ({
     return config.formatDate(dateObj, frmt, locale);
   }
 
-  return enforceNumericShaping(
-    frmt
-      .split("")
-      .map(
-        (c, i, arr) =>
-          formats[c as token] && arr[i - 1] !== "\\"
-            ? formats[c as token](dateObj, locale, config)
-            : c !== "\\"
-              ? c
-              : ""
-      )
-      .join(""),
-    config.typeNumShaping
+  return (
+    "\u202A" +
+    enforceNumericShaping(
+      frmt
+        .split("")
+        .map(
+          (c, i, arr) =>
+            formats[c as token] && arr[i - 1] !== "\\"
+              ? formats[c as token](dateObj, locale, config)
+              : c !== "\\"
+                ? c
+                : ""
+        )
+        .join(""),
+      config.typeNumShaping
+    ) +
+    "\u202C"
   );
 };
 
