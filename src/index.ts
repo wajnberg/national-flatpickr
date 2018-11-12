@@ -1043,7 +1043,11 @@ function FlatpickrInstance(
       get: () => self.__hidePrevMonthArrow,
       set(bool: boolean) {
         if (self.__hidePrevMonthArrow !== bool) {
-          toggleClass(self.prevMonthNav, "disabled", bool);
+          toggleClass(
+            document.dir !== "rtl" ? self.prevMonthNav : self.nextMonthNav,
+            "disabled",
+            bool
+          );
           self.__hidePrevMonthArrow = bool;
         }
       },
@@ -1053,7 +1057,11 @@ function FlatpickrInstance(
       get: () => self.__hideNextMonthArrow,
       set(bool: boolean) {
         if (self.__hideNextMonthArrow !== bool) {
-          toggleClass(self.nextMonthNav, "disabled", bool);
+          toggleClass(
+            document.dir !== "rtl" ? self.nextMonthNav : self.prevMonthNav,
+            "disabled",
+            bool
+          );
           self.__hideNextMonthArrow = bool;
         }
       },
@@ -2707,8 +2715,14 @@ function FlatpickrInstance(
   function onMonthNavClick(e: MouseEvent) {
     e.preventDefault();
 
-    const isPrevMonth = self.prevMonthNav.contains(e.target as Node);
-    const isNextMonth = self.nextMonthNav.contains(e.target as Node);
+    const isPrevMonth =
+      document.dir !== "rtl"
+        ? self.prevMonthNav.contains(e.target as Node)
+        : self.nextMonthNav.contains(e.target as Node);
+    const isNextMonth =
+      document.dir !== "rtl"
+        ? self.nextMonthNav.contains(e.target as Node)
+        : self.prevMonthNav.contains(e.target as Node);
 
     if (isPrevMonth || isNextMonth) {
       changeMonth(isPrevMonth ? -1 : 1);
