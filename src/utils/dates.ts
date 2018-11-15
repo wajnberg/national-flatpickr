@@ -42,7 +42,7 @@ export const createDateFormatter = ({
                 ? c
                 : ""
         )
-        .join(""),
+        .join("\u200E"),
       config.typeNumShaping
     ) +
     "\u202C"
