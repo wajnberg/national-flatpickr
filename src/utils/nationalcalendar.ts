@@ -594,6 +594,17 @@ function saveNationalDate(
   };
 }
 
+function isArabicLocale(locale: string) {
+  return locale.match(/^ar[-_].*$/i);
+}
+
+function useLatinNums(locale: string) {
+  if (!isArabicLocale(locale)) {
+    return true;
+  }
+  return cldrData[locale] && cldrData[locale] === "latn";
+}
+
 export function enforceNumericShaping(text: string, type: string) {
   if (!type) {
     return text;
@@ -621,7 +632,7 @@ export function enforceNumericShaping(text: string, type: string) {
       if (
         type === EUROPEAN ||
         (type === CONTEXTUAL && segmentDir === "ltr") ||
-        (type === NATIONAL && this.useLatinNums(locale))
+        (type === NATIONAL && useLatinNums(locale))
       ) {
         return araNum.charCodeAt(0) - 1632;
       } else {
@@ -631,7 +642,7 @@ export function enforceNumericShaping(text: string, type: string) {
       if (
         type === INDIC ||
         (type === CONTEXTUAL && segmentDir === "rtl") ||
-        (type === NATIONAL && !this.useLatinNums(locale))
+        (type === NATIONAL && !useLatinNums(locale))
       ) {
         return String.fromCharCode(parseInt(latNum) + 1632);
       } else {
