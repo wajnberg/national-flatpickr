@@ -262,7 +262,7 @@ export const formats: Formats = {
   // padded month number (01-12)
   m: function(date: Date, _: Locale, options: ParsedOptions) {
     if (!options.typeCalendar || options.typeCalendar === "none") {
-      pad(date.getMonth() + 1);
+      return pad(date.getMonth() + 1);
     } else {
       const nDate = convertToNational(date, options.typeCalendar);
       return pad(nDate.nMonth + 1);
